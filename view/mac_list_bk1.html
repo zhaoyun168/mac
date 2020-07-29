@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<{include file="layout/head.htm"}>
+<link rel="stylesheet" href="./resource/css/bootstrap-datetimepicker.min.css"> 
+<link rel="stylesheet" href="./resource/css/bootstrap-table.min.css">
+<script src="./resource/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./resource/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="./resource/js/bootstrap-table.min.js"></script>
+<script src="./resource/js/bootstrap-table-zh-CN.min.js"></script>
+<body>
+<div class="btn btn-default" style="text-align:left;width: 100%;">
+	<form class="form-inline" role="form">
+	  <div class="form-group">
+        <label for="dtp_input1" >交接日期</label>
+	    <div class="input-group date form_date col-md-1" data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+            <input class="form-control"  type="text" value="开始时间" style="width:200px" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" ></span></span>
+        </div>
+        <div class="input-group date form_date col-md-1" data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+            <input class="form-control"  type="text" value="结束时间" style="width:200px" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" ></span></span>
+        </div>
+      </div>
+	  <div class="form-group">
+	    <label for="cable_address">有线地址</label>
+	    <input type="text" class="form-control" id="cable_address" placeholder="请输入有线地址">
+	  </div>
+	  <div class="form-group">
+	    <label for="wireless_address">无线地址</label>
+	    <input type="text" class="form-control" id="wireless_address" placeholder="请输入无线地址">
+	  </div>
+	  <button type="submit" class="btn btn-primary">搜索</button>
+	</form>
+</div>
+<!-- 新增mac -->
+<div style="height: 20px;vertical-align: bottom;margin-top: 5px;">
+<button class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+	+新增mac
+</button>
+</div>
+<!-- 新增mac弹框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					新增mac
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form">
+					<div class="form-group">
+						<label for="code" class="col-sm-2 control-label">编码</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="code" 
+								   placeholder="请输入编码">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="cable_address" class="col-sm-2 control-label">有线地址</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="cable_address" 
+								   placeholder="请输入有线地址">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="wireless_address" class="col-sm-2 control-label">无线地址</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="wireless_address" 
+								   placeholder="请输入无线地址">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary">
+					保存
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<table id="mytab" class="table table-hover"></table>
+<script>
+    $('#mytab').bootstrapTable({
+        url: 'index.php?c=mac&a=list',
+        method: 'get', 
+        queryParams: function (params) {
+	        var temp = {   
+	            rows: params.limit,                         //页面大小
+	            page: (params.offset / params.limit) + 1,   //页码
+	            sort: params.sort,      //排序列名  
+	            order: params.order //排位命令（desc，asc） 
+	        };
+	        return temp;
+	    },
+        toolbar: "#toolbar",
+        sidePagination: "server",
+        striped: true, // 是否显示行间隔色
+        //search : "true",
+        uniqueId: "id",
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        sort: "id",  //排序列名  
+      	sortOrder: 'asc', //排位命令（desc，asc）
+        columns: [{
+                field: 'code',
+                title: '编码'
+            },
+            {
+                field: 'cable_address',
+                title: '有线地址'
+            },
+            {
+                field: 'wireless_address',
+                title: '无线地址'
+            },
+            {
+                field: 'handover_date',
+                title: '交接日期'
+            },
+            {
+                field: 'remarks',
+                title: '备注'
+            },
+            {
+                field: 'id',
+                title: '操作',
+                width: 120,
+                align: 'center',
+                valign: 'middle',
+                formatter: actionFormatter,
+            },
+
+        ]
+    });
+    //操作栏的格式化
+    function actionFormatter(value, row, index) {
+        var id = value;
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"EditViewById('" + id + "', view='view')\" title='查看'><span class='glyphicon glyphicon-search'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + id + "')\" title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"DeleteByIds('" + id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+        return result;
+    }
+</script>
+<script type="text/javascript">
+	//默认三十天
+    $('.form_date').datetimepicker({
+    	language:  'zh-CN',
+        dateLimit : {
+            days : 365*100
+        }, //起止时间的最大间隔
+        showDropdowns : true,
+        showWeekNumbers : false, //是否显示第几周
+        timePicker : false, //是否显示小时和分钟
+        timePickerIncrement : 60, //时间的增量，单位为分钟
+        timePicker12Hour : false, //是否使用12小时制来显示时间
+        ranges : {
+        },
+        opens : 'right', //日期选择框的弹出位置
+        buttonClasses : [ 'btn btn-default' ],
+        applyClass : 'btn-small btn-primary blue',
+        cancelClass : 'btn-small',
+        format : 'YYYY-MM-DD', //控件中from和to 显示的日期格式
+        separator : ' to ',
+        locale : {
+            applyLabel : '确定',
+            cancelLabel : '取消',
+            fromLabel : '起始时间',
+            toLabel : '结束时间',
+            customRangeLabel : '自定义',
+            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月',
+                           '七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                           firstDay : 1
+        }   //汉化日期控件
+    }, function(start, end, label) {
+        //格式化日期显示框
+        $('#searchDate').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+    });
+	$('.form_date').datetimepicker({
+        
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0
+    });
+</script>
+</body>

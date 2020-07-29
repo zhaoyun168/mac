@@ -1,0 +1,89 @@
+<?php
+/* Smarty version 3.1.33, created on 2019-06-20 14:59:58
+  from 'D:\xampp\htdocs\mac\view\mac_list.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d0b2eee392fb5_32325247',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '14de4ce3a7af2ab9834bca051645bfd435dad7fc' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\mac\\view\\mac_list.html',
+      1 => 1561013884,
+      2 => 'file',
+    ),
+    'a3ad7eddcbf35d25e7f93fdb39d96b18e7120d46' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\mac\\view\\layout\\head.htm',
+      1 => 1560996409,
+      2 => 'file',
+    ),
+  ),
+  'cache_lifetime' => 120,
+),true)) {
+function content_5d0b2eee392fb5_32325247 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <title>mac管理平台</title>
+    <link rel="stylesheet" href="./resource/css/bootstrap.min.css">  
+	<script src="./resource/js/jquery.min.js"></script>
+	<script src="./resource/js/bootstrap.min.js"></script>
+</head><link rel="stylesheet" href="./resource/css/bootstrap-datetimepicker.min.css"> 
+<script src="./resource/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./resource/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<body>
+<div class="btn btn-default" style="text-align:left;width: 100%;">
+	<form class="form-inline" role="form">
+	  <div class="form-group">
+        <label for="dtp_input1" >交接日期</label>
+	    <div class="input-group date form_date col-md-1" data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
+            <input class="form-control"  type="text" value="开始时间" style="width:200px" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" ></span></span>
+        </div>
+        <div class="input-group date form_date col-md-1" data-date="" data-date-format="yyyy-MM-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+            <input class="form-control"  type="text" value="结束时间" style="width:200px" readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove" ></span></span>
+        </div>
+      </div>
+	  <div class="form-group">
+	    <label for="cable_address">有线地址</label>
+	    <input type="text" class="form-control" id="cable_address" placeholder="请输入有线地址">
+	  </div>
+	  <div class="form-group">
+	    <label for="wireless_address">无线地址</label>
+	    <input type="text" class="form-control" id="wireless_address" placeholder="请输入无线地址">
+	  </div>
+	  <button type="submit" class="btn btn-primary">搜索</button>
+	</form>
+</div>
+<table class="table table-striped table-hover">
+  <caption>mac列表</caption>
+  <thead>
+    <tr>
+      <th>编码</th>
+      <th>有线地址</th>
+      <th>无线地址</th>
+    </tr>
+  </thead>
+  <tbody>
+  	  </tbody>
+</table>
+<script type="text/javascript">
+	$('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0
+    });
+</script>
+</body><?php }
+}

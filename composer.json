@@ -1,0 +1,21 @@
+{
+  "name": "mac",
+  "description": "MAC",
+  "license": "proprietary",
+  "require": {
+    "monolog/monolog": "^1.18",
+    "doctrine/dbal": "^2.5",
+    "symfony/yaml": "^3.1",
+    "smarty/smarty": "~3.1"
+  },
+  "autoload": {
+    "psr-0": { "Command": "", "Library": "" }
+  },
+  "autoload-dev": {
+    "psr-0": { "Command": "", "Library": "" }
+  },
+  "repositories": [
+    {"type": "composer", "url": "https://packagist.phpcomposer.com"},
+    {"packagist": false}
+  ]
+}

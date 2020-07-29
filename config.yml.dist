@@ -1,0 +1,12 @@
+parameters:
+  member-interface:
+    host: 127.0.0.1
+    port: 3306
+    user: root
+    password: 123456
+    driver: pdo_mysql
+    dbname: mac
+    charset: utf8
+  upload_path: D:\xampp\htdocs\mac\public\uploadfile
+  fail_path: D:\xampp\htdocs\mac\public\failfile
+  log_dir: D:\xampp\htdocs\mac\logs

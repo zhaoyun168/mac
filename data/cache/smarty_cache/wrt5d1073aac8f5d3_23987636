@@ -1,0 +1,160 @@
+<?php
+/* Smarty version 3.1.33, created on 2019-06-24 14:54:34
+  from 'D:\xampp\htdocs\mac\view\import.html' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.33',
+  'unifunc' => 'content_5d1073aac8b758_58730496',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'f20e5cec42eed596291968c97594fc6a31ee4d61' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\mac\\view\\import.html',
+      1 => 1561359070,
+      2 => 'file',
+    ),
+    'a3ad7eddcbf35d25e7f93fdb39d96b18e7120d46' => 
+    array (
+      0 => 'D:\\xampp\\htdocs\\mac\\view\\layout\\head.htm',
+      1 => 1560996409,
+      2 => 'file',
+    ),
+  ),
+  'cache_lifetime' => 120,
+),true)) {
+function content_5d1073aac8b758_58730496 (Smarty_Internal_Template $_smarty_tpl) {
+?><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <title>mac管理平台</title>
+    <link rel="stylesheet" href="./resource/css/bootstrap.min.css">  
+	<script src="./resource/js/jquery.min.js"></script>
+	<script src="./resource/js/bootstrap.min.js"></script>
+</head><link rel="stylesheet" href="./resource/css/bootstrap-datetimepicker.min.css"> 
+<link rel="stylesheet" href="./resource/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="./resource/css/bootstrap-dialog.min.css">
+<script src="./resource/js/bootstrap-datetimepicker.min.js"></script>
+<script src="./resource/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script src="./resource/js/bootstrap-table.min.js"></script>
+<script src="./resource/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="./resource/js/bootstrap-dialog.min.js"></script>
+<script src="./resource/js/common.js"></script>
+<body>
+<!-- 新增mac -->
+<div style="height: 20px;vertical-align: bottom;margin-top: 5px;">
+	<button class="btn btn-primary" id="import_mac">
+		mac导入
+	</button>
+</div>
+<!-- 新增mac弹框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					导入mac
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" id="mac_form" action="index.php?c=import&a=data_upload" method="POST" enctype="multipart/form-data">
+					<div class="form-group">
+				    	<div class="col-sm-10">
+				    		<input type="file" name="file_address" id="file_address">
+				    		<p class="help-block">请选择Excel文件</p>
+				    	</div>
+				  	</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="improt_mac(this);">
+					导入
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<table id="mytab" class="table table-hover"></table>
+<script type="text/javascript">
+$(function() {
+	$("#import_mac").click(function () {
+	    $("#myModalLabel").text("导入mac");
+	    $('#myModal').modal();
+	});
+
+	$('#mytab').bootstrapTable({
+        url: 'index.php?c=import&a=list',
+        method: 'get', 
+        queryParams: function (params) {
+	        var temp = {   
+	            rows: params.limit,                         //页面大小
+	            page: (params.offset / params.limit) + 1,   //页码
+	            sort: params.sort,      //排序列名  
+	            order: params.order, //排位命令（desc，asc） 
+	            //mac_id: $("#mac_id").val(),
+				//code: $("#code").val(), //编码
+				cable_address: $("#cable_address").val(), //有线地址
+				wireless_address: $("#wireless_address").val(), //无线地址
+				start_date: $("#start_date").val(), //交接日期（开始）
+				end_date: $("#end_date").val(), //交接日期（结束）
+				//remarks: $("#remarks").val() //备注
+	        };
+	        return temp;
+	    },
+        toolbar: "#toolbar",
+        sidePagination: "server",
+        striped: true, // 是否显示行间隔色
+        //search : "true",
+        uniqueId: "id",
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        pagination: true, // 是否分页
+        sortable: true, // 是否启用排序
+        sort: "id",  //排序列名  
+      	sortOrder: 'asc', //排位命令（desc，asc）
+        columns: [{
+                field: 'id',
+                title: '导入批次'
+            },
+            {
+                field: 'import_time',
+                title: '导入时间'
+            },
+            {
+                field: 'import_file',
+                title: '导入文件名'
+            },
+            {
+                field: 'import_count',
+                title: '导入数据量'
+            },
+        ]
+    });
+});
+
+function improt_mac(ele)
+{
+	if(!$("#file_address").val())
+	{
+		$.showErr('请选择导入数据文件！');
+		return false;
+	}
+
+	//保存
+    $("#mac_form").submit();
+
+    $(ele).attr('disabled', true);
+    $(ele).html('正在导入，请稍后。。。');
+}
+</script>
+</body>
+</html><?php }
+}
